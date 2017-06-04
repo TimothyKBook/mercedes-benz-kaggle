@@ -1,3 +1,5 @@
+sink('logs/0-eda.log', append = FALSE)
+
 options(stringsAsFactors = FALSE)
 
 cwd <- '.'
@@ -46,3 +48,5 @@ ggplot(train) +
 # a grouped lasso seems like a good idea here.  Potentially with log-response.
 
 # TODO: Mock this up as Jupyter Notebook
+
+sink()
