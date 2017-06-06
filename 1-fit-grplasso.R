@@ -44,21 +44,21 @@ table(num_keep)
 num_vars <- num_vars[num_keep]
 
 ### Combine variables, get params input-ready ==================================
-y <- train$y
+# y <- train$y
+y <- log(train$y)
 x <- cbind(cat_mm, num_vars)
 
 df <- data.frame(y, x)
-df_log <- data.frame(logy, x)
 
 grp_ind <- c(grp_ind, rep(NA, ncol(num_vars)))
 
 ### Fit m1 =====================================================================
-m1 <- grplasso(formula = y ~ ., data = df, lambda = 100, model = LinReg())
-yhat <- fitted(m1)
+m1 <- grplasso(formula = y ~ ., data = df, lambda = 10, model = LinReg())
+yhat <- exp(fitted(m1))
 
 # Rsq of 61.4%, wow!
-sse <- sum((y - yhat)^2)
-ssto <- sum((y - mean(y))^2)
+sse <- sum((exp(y) - yhat)^2)
+ssto <- sum((exp(y) - mean(exp(y)))^2)
 1 - sse / ssto
 
 ### Fit m2 =====================================================================
