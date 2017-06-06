@@ -5,6 +5,7 @@ setwd(cwd)
 
 library(dplyr)
 library(grplasso)
+library(glmnet)
 
 train <- read.csv('data/train.csv')
 test <- read.csv('data/test.csv')
@@ -44,7 +45,6 @@ num_vars <- num_vars[num_keep]
 
 ### Combine variables, get params input-ready ==================================
 y <- train$y
-logy <- log(y)
 x <- cbind(cat_mm, num_vars)
 
 df <- data.frame(y, x)
@@ -52,11 +52,15 @@ df_log <- data.frame(logy, x)
 
 grp_ind <- c(grp_ind, rep(NA, ncol(num_vars)))
 
-### Fit model ==================================================================
-m1 <- grplasso(formula = y ~ ., data = df, lambda = 1, model = LinReg())
+### Fit m1 =====================================================================
+m1 <- grplasso(formula = y ~ ., data = df, lambda = 100, model = LinReg())
 yhat <- fitted(m1)
 
 # Rsq of 61.4%, wow!
 sse <- sum((y - yhat)^2)
 ssto <- sum((y - mean(y))^2)
 1 - sse / ssto
+
+### Fit m2 =====================================================================
+m2 <- cv.glmnet(as.matrix(num_vars), y)
+
