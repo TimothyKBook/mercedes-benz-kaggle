@@ -47,6 +47,4 @@ ggplot(train) +
 # tree-methods, but have curse of dimensionality to contend with as well.  IMO,
 # a grouped lasso seems like a good idea here.  Potentially with log-response.
 
-# TODO: Mock this up as Jupyter Notebook
-
 sink()
